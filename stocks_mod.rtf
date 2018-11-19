@@ -1,0 +1,63 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Option Explicit\
+Sub stock_mod()\
+    Dim src_row_ct As Long\
+    Dim tgt_row_ct As Long\
+    Dim ticker As String\
+    Dim total_vol As Double\
+    Dim open_val As Double\
+    Dim close_val As Double\
+\
+    src_row_ct = 2\
+    tgt_row_ct = 2\
+    total_vol = 0\
+    ticker = Cells(src_row_ct, 1)\
+    open_val = Cells(src_row_ct, 3)\
+    \
+    Cells(1, 9) = "Ticker"\
+    Cells(1, 10) = "Yearly Change"\
+    Cells(1, 11) = "Percent Change"\
+    Cells(1, 12) = "Total Stock Volume"\
+    \
+    Do While Cells(src_row_ct, 1) <> ""\
+        If Cells(src_row_ct, 1) <> ticker Then\
+            Cells(tgt_row_ct, 9) = ticker\
+            Cells(tgt_row_ct, 12) = total_vol\
+            Cells(tgt_row_ct, 10) = close_val - open_val\
+            If (Cells(tgt_row_ct, 10) > 0) Then\
+                Cells(tgt_row_ct, 10).Interior.Color = vbGreen\
+            Else\
+                Cells(tgt_row_ct, 10).Interior.Color = vbRed\
+            End If\
+            Cells(tgt_row_ct, 11) = (close_val - open_val) / open_val\
+            Cells(tgt_row_ct, 11).Select\
+            Selection.NumberFormat = "0.00%"\
+            total_vol = 0\
+            ticker = Cells(src_row_ct, 1)\
+            open_val = Cells(src_row_ct, 3)\
+            tgt_row_ct = tgt_row_ct + 1\
+        Else\
+            close_val = Cells(src_row_ct, 6)\
+            total_vol = total_vol + Cells(src_row_ct, 7)\
+            src_row_ct = src_row_ct + 1\
+        End If\
+    Loop\
+    Cells(tgt_row_ct, 9) = ticker\
+    Cells(tgt_row_ct, 12) = total_vol\
+    Cells(tgt_row_ct, 10) = close_val - open_val\
+    If (Cells(tgt_row_ct, 10) > 0) Then\
+        Cells(tgt_row_ct, 10).Interior.Color = vbGreen\
+    Else\
+        Cells(tgt_row_ct, 10).Interior.Color = vbRed\
+    End If\
+    Cells(tgt_row_ct, 11) = (close_val - open_val) / open_val\
+    Cells(tgt_row_ct, 11).Select\
+    Selection.NumberFormat = "0.00%"\
+End Sub\
+\
+}
